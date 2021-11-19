@@ -21,6 +21,25 @@ function App() {
     return obj
   }
 
+  
+
+  const getRows = async (input) => {
+
+    await axios.post('http://127.0.0.1:5000/calculator', {
+      term : input
+    }).then(function (response) {
+      console.log(response);
+    }).catch(function (error) {
+      console.log(error);
+    })
+    
+    axios.get('http://127.0.0.1:5000/calculator')
+    .then((response) => {
+      console.log(response.data);
+    })
+    
+  }
+
   const onChange = e => {
     var input = e.target.value
     var separatedInput = input.split(/([+*\/-])/)
@@ -28,19 +47,8 @@ function App() {
     setSeparatedTerm(separatedInput)
   
     var inputObj = toObject(separatedInput)
+    getRows(inputObj)
     
-    console.log(inputObj)
-
-    console.log(e.target.value.split(/([+*\/-])/))
-    axios.post('http://127.0.0.1:5000/calculator', {
-      term : inputObj
-    }, {
-      headers: {"Access-Control-Allow-Origin": ""}
-    }).then(function (response) {
-      console.log(response);
-    }).catch(function (error) {
-      console.log(error);
-    })
   }
 
 
