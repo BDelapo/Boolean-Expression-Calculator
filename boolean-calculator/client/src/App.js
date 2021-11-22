@@ -4,50 +4,57 @@ import React, { useState, useEffect } from 'react';
 import Table from './Table'
 import axios from 'axios'
 
-const ID = Math.floor(Math.random()*20)
+const ID = Math.floor(Math.random() * 20)
 
 
 function App() {
   const [inputTerm, setInputTerm] = useState('')
   const [separatedTerm, setSeparatedTerm] = useState([])
 
-  const toObject = term =>{
+  useEffect(() => {
+    sendSessionId()
+  }, [])
+
+
+  const sendSessionId = async () => {
+    await axios.post('http://127.0.0.1:8000//', {
+      id: ID,
+    }).then(function (response) {
+      console.log(response);
+    }).catch(function (error) {
+      console.log(error);
+    })
+  }
+
+  const toObject = term => {
     var obj = {}
-    for(var i = 0; i < term.length; i++){
+    for (var i = 0; i < term.length; i++) {
       obj[i] = term[i]
     }
     return obj
   }
 
 
-//   const getRows = async (ID, input) => {
-//     await axios.post('http://127.0.0.1:5000/calculator', {
-//       id : ID,
-//       terms : input
-//     }).then(function (response) {
-//       console.log(response);
-//     }).catch(function (error) {
-//       console.log(error);
-//     })
-    
-//     axios.get('http://127.0.0.1:5000/calculator', {params: {
-//       id: ID
-//     }})
-//     .then((response) => {
-//       console.log(response.data);
-//   })
-// }
+  const getRows = async (ID, input) => {
+    await axios.post('http://127.0.0.1:8000//calculate-terms/', {
+      terms: input
+    }).then(function (response) {
+      console.log(response);
+    }).catch(function (error) {
+      console.log(error);
+    })
+  }
 
   const onChange = e => {
     var input = e.target.value
     var separatedInput = input.split(/([+*-])/)
     setInputTerm(input)
     setSeparatedTerm(separatedInput)
-    // console.log(separatedInput.length)
-    // var inputObj = toObject(separatedInput)
-    // console.log(inputObj)
-    // getRows(ID, inputObj)
-    
+    console.log(separatedInput.length)
+    var inputObj = toObject(separatedInput)
+    console.log(inputObj)
+    getRows(ID, inputObj)
+
   }
 
 
