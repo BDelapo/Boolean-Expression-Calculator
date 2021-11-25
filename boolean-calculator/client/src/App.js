@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Table from './Table'
 import axios from 'axios'
 
-const ID = Math.floor(Math.random() * 20)
+axios.defaults.withCredentials = true
 
 
 function App() {
@@ -16,16 +16,6 @@ function App() {
   }, [])
 
 
-  const sendSessionId = async () => {
-    await axios.post('http://127.0.0.1:8000//', {
-      id: ID,
-    }).then(function (response) {
-      console.log(response);
-    }).catch(function (error) {
-      console.log(error);
-    })
-  }
-
   const toObject = term => {
     var obj = {}
     for (var i = 0; i < term.length; i++) {
@@ -34,10 +24,28 @@ function App() {
     return obj
   }
 
+  const sendSessionId = async () => {
+    await axios.post('http://127.0.0.1:8000/api/set-session/', {
+    }).then(function (response) {
+      console.log(response)
+    }).catch(function (error) {
+      console.log(error);
+    })
+  }
 
-  const getRows = async (ID, input) => {
-    await axios.post('http://127.0.0.1:8000//calculate-terms/', {
-      terms: input
+  const postRows = async (input) => {
+    await axios.post('http://127.0.0.1:8000/api/set-session/calculate/', {
+      term: input
+    }).then(function (response) {
+      console.log(response)
+    }).catch(function (error) {
+      console.log(error);
+    })
+  
+  }
+
+  const getRows = async () => {
+    await axios.get('http://127.0.0.1:8000/api/set-session/calculate/', {
     }).then(function (response) {
       console.log(response);
     }).catch(function (error) {
@@ -48,13 +56,11 @@ function App() {
   const onChange = e => {
     var input = e.target.value
     var separatedInput = input.split(/([+*-])/)
+    var inputObj = toObject(separatedInput)
     setInputTerm(input)
     setSeparatedTerm(separatedInput)
-    console.log(separatedInput.length)
-    var inputObj = toObject(separatedInput)
-    console.log(inputObj)
-    getRows(ID, inputObj)
-
+    postRows(inputObj)
+    getRows()
   }
 
 

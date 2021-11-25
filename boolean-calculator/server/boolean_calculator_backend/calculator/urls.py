@@ -4,7 +4,8 @@ from django.urls.conf import include
 from . import views
 
 urlpatterns = [
-    path('', views.setSession ),
-    path('calculate-terms/', views.getRows )
+    path('set-session/', views.Session_Auth.as_view() ),
+    path('set-session/calculate/', views.Row_Obtainer.as_view() ),
+    # path('calculate-terms/', views.getRows )
 
 ]
