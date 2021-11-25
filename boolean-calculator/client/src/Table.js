@@ -2,16 +2,20 @@ import { DataGrid } from '@mui/x-data-grid'
 
 const Table = (props) => {
 
-    const column = props.Term.separatedTerm.map( (term, id) => {
+    const column = props.Term.termData.separatedTerm.map((term, id) => {
 
         return {field: id, headerName: term, width: 70 }
     
     })
 
 
-    const rows = [{id: 1, term: props.Term.separatedTerm}]
+    const rowDataValues = Object.values(props.Term.termData.rowData)
 
-    const columns = [{ field: 1, headerName: props.Term.separatedTerm, width: 70 }, { field: 2, headerName: props.Term.separatedTerm, width: 70 }]
+    const rows = rowDataValues.map((row, id)=> {
+        return {id: id, row}
+    })
+
+    console.log(rows)
 
     return (
         <div>

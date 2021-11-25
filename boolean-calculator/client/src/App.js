@@ -8,8 +8,9 @@ axios.defaults.withCredentials = true
 
 
 function App() {
-  const [inputTerm, setInputTerm] = useState('')
-  const [separatedTerm, setSeparatedTerm] = useState([])
+  const [termData, setTermData] = useState({inputTerm: '', separatedTerm: [], rowData:[]})
+  // const [separatedTerm, setSeparatedTerm] = useState([])
+  // const [rowData, setRowData] = useState([])
 
   useEffect(() => {
     sendSessionId()
@@ -27,7 +28,7 @@ function App() {
   const sendSessionId = async () => {
     await axios.post('http://127.0.0.1:8000/api/set-session/', {
     }).then(function (response) {
-      console.log(response)
+      // console.log(response)
     }).catch(function (error) {
       console.log(error);
     })
@@ -37,7 +38,7 @@ function App() {
     await axios.post('http://127.0.0.1:8000/api/set-session/calculate/', {
       term: input
     }).then(function (response) {
-      console.log(response)
+      // console.log(response)
     }).catch(function (error) {
       console.log(error);
     })
@@ -45,22 +46,24 @@ function App() {
   }
 
   const getRows = async () => {
-    await axios.get('http://127.0.0.1:8000/api/set-session/calculate/', {
-    }).then(function (response) {
-      console.log(response);
-    }).catch(function (error) {
-      console.log(error);
+    await axios.get('http://127.0.0.1:8000/api/set-session/calculate/')
+    .then(
+      (result) => {
+       setTermData(prevTerm => ({...prevTerm, rowData: result.data}))
     })
+    .catch((error) => {console.log(error)})
+
   }
 
   const onChange = e => {
     var input = e.target.value
     var separatedInput = input.split(/([+*-])/)
     var inputObj = toObject(separatedInput)
-    setInputTerm(input)
-    setSeparatedTerm(separatedInput)
     postRows(inputObj)
     getRows()
+    setTermData(prevTerm => ({...prevTerm, inputTerm: input, separatedTerm : separatedInput}))
+    console.log(termData.rowData)
+    console.log([1, 2, 3, 4])
   }
 
 
@@ -71,12 +74,12 @@ function App() {
         <Grid container spacing={0}>
           <Grid item xs={12}>
             <Container maxWidth="sm">
-              <TextField id="outlined-basic" label="Outlined" variant="outlined" onChange={e => onChange(e)} value={inputTerm} />
+              <TextField id="outlined-basic" label="Outlined" variant="outlined" onChange={e => onChange(e)} value={termData.inputTerm} />
             </Container>
           </Grid>
           <Grid item xs={12}>
             <Container maxWidth="sm">
-              <Table Term={{ separatedTerm }} />
+              <Table Term={{ termData }} />
             </Container>
           </Grid>
         </Grid>
