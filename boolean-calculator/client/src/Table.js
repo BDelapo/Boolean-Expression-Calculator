@@ -1,35 +1,60 @@
-import { DataGrid } from '@mui/x-data-grid'
+import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper } from '@mui/material';
 
-const Table = (props) => {
+const TruthTable = (props) => {
 
-    const column = props.Term.termData.separatedTerm.map((term, id) => {
+    const VariableColumns = props.Term.termData.variables.map((term, key) => {
 
-        return {field: id, headerName: term, width: 70 }
-    
+        return (<TableCell key={key}> {term} </TableCell>)
+
     })
 
 
     const rowDataValues = Object.values(props.Term.termData.rowData)
 
-    const rows = rowDataValues.map((row, id)=> {
-        return {id: id, row}
+    const Rows = rowDataValues.map((row, key) => {
+        
+        const rowItemValues = Object.values(row)
+        console.log(key)
+
+        const RowItems = rowItemValues.map((rowItem, key) => {
+            return <TableCell key={key} >{rowItem}</TableCell>
+        })
+
+        return <TableRow key={key} >{RowItems}</TableRow>
     })
 
-    console.log(rows)
+    // console.log(Rows)
 
     return (
-        <div>
-            <DataGrid
-                rows={rows}
-                columns={column}
-                rowHeight={38}
-                checkboxSelection
-                disableSelectionOnClick
-            />
-        </div>
+        <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                    <TableRow>
+                        {VariableColumns}
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {/* {rows.map((row) => (
+                        <TableRow
+                            key={row.name}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            <TableCell component="th" scope="row">
+                                {row.name}
+                            </TableCell>
+                            <TableCell align="right">{row.calories}</TableCell>
+                            <TableCell align="right">{row.fat}</TableCell>
+                            <TableCell align="right">{row.carbs}</TableCell>
+                            <TableCell align="right">{row.protein}</TableCell>
+                        </TableRow>
+                    ))} */}
+                {Rows}
+                </TableBody>
+            </Table>
+        </TableContainer>
     )
 
 }
 
 
-export default Table
+export default TruthTable

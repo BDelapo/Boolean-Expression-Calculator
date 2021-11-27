@@ -1,14 +1,14 @@
 import './App.css';
 import { Box, Grid, Container, TextField } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import Table from './Table'
+import TruthTable from './Table'
 import axios from 'axios'
 
 axios.defaults.withCredentials = true
 
 
 function App() {
-  const [termData, setTermData] = useState({inputTerm: '', separatedTerm: [], rowData:[]})
+  const [termData, setTermData] = useState({inputTerm: '', variables: [], rowData:[]})
   // const [separatedTerm, setSeparatedTerm] = useState([])
   // const [rowData, setRowData] = useState([])
 
@@ -57,13 +57,14 @@ function App() {
 
   const onChange = e => {
     var input = e.target.value
+    var inputVariables = input.split(/[+*-]/)
     var separatedInput = input.split(/([+*-])/)
     var inputObj = toObject(separatedInput)
     postRows(inputObj)
     getRows()
-    setTermData(prevTerm => ({...prevTerm, inputTerm: input, separatedTerm : separatedInput}))
-    console.log(termData.rowData)
-    console.log([1, 2, 3, 4])
+    setTermData(prevTerm => ({...prevTerm, inputTerm: input, variables : inputVariables}))
+    // console.log(termData.rowData)
+    // console.log([1, 2, 3, 4])
   }
 
 
@@ -79,7 +80,7 @@ function App() {
           </Grid>
           <Grid item xs={12}>
             <Container maxWidth="sm">
-              <Table Term={{ termData }} />
+              <TruthTable Term={{ termData }} />
             </Container>
           </Grid>
         </Grid>
