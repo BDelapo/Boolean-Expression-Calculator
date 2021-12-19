@@ -8,13 +8,11 @@ const TruthTable = (props) => {
 
     })
 
-
     const rowDataValues = Object.values(props.Term.termData.rowData)
 
     const Rows = rowDataValues.map((row, key) => {
         
         const rowItemValues = Object.values(row)
-        console.log(key)
 
         const RowItems = rowItemValues.map((rowItem, key) => {
             return <TableCell key={key} >{rowItem}</TableCell>
@@ -22,8 +20,6 @@ const TruthTable = (props) => {
 
         return <TableRow key={key} >{RowItems}</TableRow>
     })
-
-    // console.log(Rows)
 
     return (
         <TableContainer component={Paper}>
@@ -34,20 +30,6 @@ const TruthTable = (props) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {/* {rows.map((row) => (
-                        <TableRow
-                            key={row.name}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row">
-                                {row.name}
-                            </TableCell>
-                            <TableCell align="right">{row.calories}</TableCell>
-                            <TableCell align="right">{row.fat}</TableCell>
-                            <TableCell align="right">{row.carbs}</TableCell>
-                            <TableCell align="right">{row.protein}</TableCell>
-                        </TableRow>
-                    ))} */}
                 {Rows}
                 </TableBody>
             </Table>

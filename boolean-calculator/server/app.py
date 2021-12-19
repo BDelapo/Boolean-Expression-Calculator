@@ -5,8 +5,6 @@
 
 
 
-
-
 # ## Class that calculates the truth values of the terms. Accepts POST requests containing Term in json form and accepts GET requests
 # ## for the resulting calculations
 
@@ -33,5 +31,4 @@
 #         return pd.DataFrame(row_arr).to_dict()
 
 
-print(1)
 

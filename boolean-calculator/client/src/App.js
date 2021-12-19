@@ -9,8 +9,6 @@ axios.defaults.withCredentials = true
 
 function App() {
   const [termData, setTermData] = useState({inputTerm: '', variables: [], rowData:[]})
-  // const [separatedTerm, setSeparatedTerm] = useState([])
-  // const [rowData, setRowData] = useState([])
 
   useEffect(() => {
     sendSessionId()
@@ -28,31 +26,30 @@ function App() {
   const sendSessionId = async () => {
     await axios.post('http://127.0.0.1:8000/api/set-session/', {
     }).then(function (response) {
-      // console.log(response)
+      console.log(response)
     }).catch(function (error) {
       console.log(error);
     })
   }
 
-  const postRows = async (input) => {
-    await axios.post('http://127.0.0.1:8000/api/set-session/calculate/', {
+
+  const getRows = async (input) => {
+    
+    await axios.post('http://127.0.0.1:8000/api/set-session/calculate/post', {
       term: input
     }).then(function (response) {
-      // console.log(response)
+      console.log(response)
     }).catch(function (error) {
       console.log(error);
     })
-  
-  }
 
-  const getRows = async () => {
-    await axios.get('http://127.0.0.1:8000/api/set-session/calculate/')
+    await axios.get('http://127.0.0.1:8000/api/set-session/calculate/get')
     .then(
       (result) => {
+      console.log(result + 'hello')
        setTermData(prevTerm => ({...prevTerm, rowData: result.data}))
     })
     .catch((error) => {console.log(error)})
-
   }
 
   const onChange = e => {
@@ -60,14 +57,11 @@ function App() {
     var inputVariables = input.split(/[+*-]/)
     var separatedInput = input.split(/([+*-])/)
     var inputObj = toObject(separatedInput)
-    postRows(inputObj)
-    getRows()
+    getRows(inputObj)
     setTermData(prevTerm => ({...prevTerm, inputTerm: input, variables : inputVariables}))
-    // console.log(termData.rowData)
-    // console.log([1, 2, 3, 4])
   }
 
-
+  console.log(termData.inputTerm)
 
   return (
     <div className="App">
