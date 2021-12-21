@@ -7,7 +7,4 @@ urlpatterns = [
     path('set-session/', views.post_session ),
     path('set-session/calculate/post', views.post ),
     path('set-session/calculate/get', views.get ),
-
-    # path('calculate-terms/', views.getRows )
-
 ]
