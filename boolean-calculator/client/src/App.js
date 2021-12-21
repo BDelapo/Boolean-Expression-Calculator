@@ -1,10 +1,10 @@
 import './App.css';
-import { Box, Grid, Container, TextField, Paper, Typography} from '@mui/material';
+import { Box, Grid, Container, TextField, Paper, Typography } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import TruthTable from './Table'
 import axios from 'axios'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { green } from '@mui/material/colors';
+
 
 axios.defaults.withCredentials = true
 
@@ -62,41 +62,126 @@ function App() {
     getRows(inputObj)
   }
 
+  // ########## STYLING ###########
+
+  // Color palette
+  let themePalette = createTheme({
+    palette: {
+      primary: {
+        main: "#2962ff"
+      },
+      secondary: {
+        main: "#768fff"
+      },
+      info: {
+        main: "#0039cb"
+      }
+    },
+  })
+
+  // Component customizations
+  const theme = createTheme(themePalette, {
+    components: {
+      MuiTableRow: {
+        variants: [
+          {
+            props: { color: 'highlight' },
+            style: {
+              backgroundColor: themePalette.palette.primary.main
+            }
+          },
+          {
+            props: { color: 'body', type: "dark"},
+            style: {
+              backgroundColor: themePalette.palette.secondary.main,
+              color: "white",
+              "&:hover":{
+                backgroundColor: themePalette.palette.primary.main
+              }
+            }
+          },
+          {
+            props: { color: 'body', type: "light"},
+            style: {
+              backgroundColor: "white",
+              "&:hover":{
+                backgroundColor: themePalette.palette.primary.main,
+                color: "white",
+              }
+            }
+          }
+        ]
+      },
+      MuiTypography: {
+        variants: [
+          {
+            props: { type: "highlight" },
+            style: {
+              color: "white",
+              fontWeight: "normal",
+              fontSize: "large"
+            }
+          },
+          {
+            props: { type: "banner" },
+            style: {
+              color: "white",
+              fontFamily: 'Poppins',
+            }
+          },
+        ]
+      },
+      MuiPaper: {
+        variants: [
+          {
+            props: { type: 'main' },
+            style: {
+              backgroundColor: "white",
+              height: "100vh"
+            }
+          },
+          {
+            props: { type: 'banner' },
+            style: {
+              width: "100%",
+              height: "62%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
+              backgroundColor: "#2962ff",
+              marginTop: "5%",
+              marginBottom: "3%"
+            }
+          }
+        ]
+      }
+    }
+  })
 
   return (
     <div className="App">
-     
-      <Box sx={{ height: '80vh', display: 'flex', marginTop: "7%" }}>
-        <Grid container spacing={0} sx={{ justifyContent: "center" }}>
-          <Grid item xs={9}>
-            <Paper elevation={3} sx={{ 
-              width: "100%", 
-              height: "40%",
-              display: "flex", 
-              alignItems: "center", 
-              justifyContent: "center",
-              overflow: "hidden",
-              backgroundColor: green[500]
-              }}>
-                <Typography variant='h1' sx={{ 
-                  color: "white",
-                  textShadow : "1px 2px 2px black",
-                  fontFamily: 'helvetica',
-                  fontStyle: "bold"
-                }}>
-                BoolCalc
-                </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={11}>
-            <Container maxWidth="false">
-              <TextField id="outlined-basic" label="Expression" variant="outlined" onChange={e => onChange(e)} value={termData.inputTerm} />
-              <TruthTable Term={{ termData }} />
-            </Container>
-          </Grid>
-        </Grid>
-      </Box>
-      
+      <ThemeProvider theme={theme}>
+        <Paper type="main">
+          <Box sx={{ height: '80vh', display: 'flex' }}>
+            <Grid container spacing={0} sx={{ justifyContent: "center" }}>
+              <Grid item xs={9}>
+                <Paper elevation={3} type="banner">
+                  <Typography variant='h1' type="banner">
+                    BoolCalc
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={11}>
+                <Container maxWidth="false">
+                  <TextField id="outlined-basic" label="Expression" variant="outlined" onChange={e => onChange(e)} value={termData.inputTerm} />
+                  <TruthTable Term={{ termData }} />
+                </Container>
+              </Grid>
+            </Grid>
+          </Box>
+        </Paper>
+      </ThemeProvider>
     </div>
   );
 
