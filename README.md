@@ -8,7 +8,7 @@ This is inspired by my frustration with online boolean expression calculators an
 
 
 
-#### Visual Progress Update #1
+#### Visual Progress Update #2
 December 28, 2021
 
 ![image](https://github.com/BDelapo/Boolean-Expression-Calculator/blob/master/README_GIFS/boolcalc_demo_part2.gif)
