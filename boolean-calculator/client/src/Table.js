@@ -23,7 +23,7 @@ const TruthTable = (props) => {
         })
         return (
             key % 2 === 1 ?
-                <TableRow color="body" type="dark" key={key}> {RowItems} </TableRow>
+                <TableRow color="body" type="dark" key={key}>{RowItems}</TableRow>
                 : 
                 <TableRow color="body" type="light" key={key} >{RowItems}</TableRow>)
     })

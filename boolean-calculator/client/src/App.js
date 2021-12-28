@@ -56,6 +56,9 @@ function App() {
   const onChange = e => {
     var input = e.target.value.trim()
     var inputVariables = input.split(/[+*-]/).filter(i => i)
+    if(inputVariables.length > 1){
+    inputVariables.push(input)
+    }
     var separatedInput = input.split(/([+*-])/).filter(i => i)
     var inputObj = toObject(separatedInput)
     setTermData(prevTerm => ({ ...prevTerm, inputTerm: input, variables: inputVariables }))
@@ -68,13 +71,13 @@ function App() {
   let themePalette = createTheme({
     palette: {
       primary: {
-        main: "#2962ff"
+        main: "#aa00ff"
       },
       secondary: {
-        main: "#768fff"
+        main: "#e254ff"
       },
       info: {
-        main: "#0039cb"
+        main: "#7200ca"
       }
     },
   })
@@ -84,12 +87,14 @@ function App() {
     components: {
       MuiTableRow: {
         variants: [
+          // Table head
           {
             props: { color: 'highlight' },
             style: {
               backgroundColor: themePalette.palette.primary.main
             }
           },
+          // Table Body
           {
             props: { color: 'body', type: "dark"},
             style: {
@@ -114,6 +119,7 @@ function App() {
       },
       MuiTypography: {
         variants: [
+         // Table head text  
           {
             props: { type: "highlight" },
             style: {
@@ -122,6 +128,7 @@ function App() {
               fontSize: "large"
             }
           },
+          // Banner text
           {
             props: { type: "banner" },
             style: {
@@ -133,6 +140,7 @@ function App() {
       },
       MuiPaper: {
         variants: [
+          // Page background
           {
             props: { type: 'main' },
             style: {
@@ -140,6 +148,7 @@ function App() {
               height: "100vh"
             }
           },
+          // Banner background
           {
             props: { type: 'banner' },
             style: {
@@ -149,7 +158,7 @@ function App() {
               alignItems: "center",
               justifyContent: "center",
               overflow: "hidden",
-              backgroundColor: "#2962ff",
+              backgroundColor: themePalette.palette.primary.main,
               marginTop: "5%",
               marginBottom: "3%"
             }
