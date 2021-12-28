@@ -9,6 +9,13 @@ This is inspired by my frustration with online boolean expression calculators an
 
 
 #### Visual Progress Update #1
+December 28, 2021
+
+![image](https://github.com/BDelapo/Boolean-Expression-Calculator/blob/master/README_GIFS/boolcalc_demo_part2.gif)
+
+
+
+#### Visual Progress Update #1
 December 21, 2021
 
 ![image](https://github.com/BDelapo/Boolean-Expression-Calculator/blob/master/README_GIFS/boolcalc_demo_part1.gif)
