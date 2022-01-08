@@ -48,6 +48,7 @@ function App() {
       .then(
         (result) => {
           setTermData(prevTerm => ({ ...prevTerm, rowData: result.data }))
+          console.log(result)
         })
       .catch((error) => { console.log(error) })
   }
