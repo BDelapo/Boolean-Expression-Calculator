@@ -8,6 +8,13 @@ This is inspired by my frustration with online boolean expression calculators an
 
 
 
+#### Visual Progress Update #3 Completed
+January 9, 2022
+
+![image](https://github.com/BDelapo/Boolean-Expression-Calculator/blob/master/README_GIFS/boolcalc_demo_part3.gif)
+
+
+
 #### Visual Progress Update #2
 December 28, 2021
 
