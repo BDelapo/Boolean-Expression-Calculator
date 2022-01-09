@@ -16,6 +16,7 @@ def post_session(request):
 
 @api_view(['POST'])
 def post(request):
+    print(request.data)
     request.session['term'] = calculations.calculate(request.data['term'])
     resp = Response(request.data)
     return resp

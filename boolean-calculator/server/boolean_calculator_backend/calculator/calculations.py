@@ -91,7 +91,7 @@ class exp_tree():
             if o == '-':
                 while i < length:
                     if exp[i] == o:
-                        term = [exp[i+1], exp[i]]
+                        term = [None, exp[i+1], exp[i]]
                         exp.insert(i+2, term)
                         del exp[i:i+2]
                         length -= 1
@@ -114,16 +114,20 @@ class exp_tree():
             tree = self.tree_root
             
         val = tree.val
-        if type(tree.left) != Node:
-            left = var_val[tree.left]
-        else: 
-            left = self.evaluate_tree(var_val, tree.left)
+        if tree.left != None:
+            if type(tree.left) != Node:
+                left = var_val[tree.left]
+            else: 
+                left = self.evaluate_tree(var_val, tree.left)
             
         if type(tree.right) != Node:
             right = var_val[tree.right]
         else:
             right = self.evaluate_tree(var_val, tree.right)
-            
+
+        if val == '-':
+            result = self.log_negation(right)
+
         if val == '*':
             result = self.log_intersection(left, right)
             
@@ -140,12 +144,14 @@ class exp_tree():
         return 1 if v1 == 1 or v2 == 1 else 0
 
     def log_negation(self, v1):
-        return 0 if v1 ==1 else 0
+        return 0 if v1 ==1 else 1
 
     
 def get_variable_rows(operand_dict):
     operands  = np.array(list(operand_dict.values()))
-#     print(operands)
+    print()
+    print(operands)
+    print()
     column_size = 2**operands.size
     columns = np.zeros((operands.size, column_size))
     
@@ -161,25 +167,24 @@ def get_variable_rows(operand_dict):
 
         row_arr = dict(zip(indices, np.flip(columns)))
         row_arr = pd.DataFrame(row_arr).to_dict()
-#         print(row_arr)
+
     return row_arr
 
 
 def calculate(expression):
-    expression_list = list(filter(lambda a: a not in ['+', '-', '*', ')', '('], expression.values()))
+    operands = np.array(list(filter(lambda a: a not in ['+', '-', '*', ')', '('], expression.values())))
+    _, index = np.unique(operands, return_index=True)
 
-    if not expression_list:
+    print(operands)
+
+    operands_dict = dict(enumerate(operands[np.sort(index)]))
+    if operands.size == 0:
         return
-    elif expression_list[-1] not in ['+', '-', '*']:
-        operands = dict(enumerate(np.unique(np.array(expression_list))))
-    else :
-        expression_list.pop()
-        operands = dict(enumerate(np.unique(np.array(expression_list))))
+    
+    var_rows_dict = pd.DataFrame(get_variable_rows(operands_dict))
 
-    var_rows_dict = pd.DataFrame(get_variable_rows(operands))
-    
-    
-    if len(expression) > 2 and expression_list[-1] not in ['+', '-', '*', ')', '(']:
+
+    if list(expression.values())[-1] not in ['+', '-', '*', '('] and len(expression) > 1:
         expression_tree = exp_tree(list(expression.values())) 
         evaluated = []
     
@@ -187,8 +192,8 @@ def calculate(expression):
             evaluated.append(expression_tree.evaluate_tree(var_val = dict(row[:])))
     
         var_rows_dict['answer'] = evaluated
+
     calc = var_rows_dict.transpose().to_dict()
-    print(calc)
     return calc
 
 # def get_variable_rows(operand_dict):

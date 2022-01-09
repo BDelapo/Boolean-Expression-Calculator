@@ -1,9 +1,10 @@
 import './App.css';
-import { Box, Grid, Container, TextField, Paper, Typography } from '@mui/material';
+import { Box, Grid, Container, TextField, Paper, Typography, Button } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import TruthTable from './Table'
 import axios from 'axios'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { grid } from '@mui/system';
 
 
 axios.defaults.withCredentials = true
@@ -40,7 +41,7 @@ function App() {
     await axios.post('http://127.0.0.1:8000/api/set-session/calculate/post', {
       term: input
     }).then(function (response) {
-      console.log(response)
+      // console.log(response)
     }).catch(function (error) {
       console.log(error);
     })
@@ -48,21 +49,40 @@ function App() {
       .then(
         (result) => {
           setTermData(prevTerm => ({ ...prevTerm, rowData: result.data }))
-          console.log(result)
+          // console.log(result)
+          console.log('ggg')
         })
       .catch((error) => { console.log(error) })
   }
 
   // Upon term being typed in the input field, the term is parsed and turned into JSON, sent to backend, and state updated with obtained data 
   const onChange = e => {
+
     var input = e.target.value.trim()
-    var inputVariables = input.split(/[+*-]/).filter(i => i)
-    if(inputVariables.length > 1){
-    inputVariables.push(input)
+
+    setTermData(prevTerm => ({ ...prevTerm, inputTerm: input }))
+    //   var inputVariables = input.split(/[()+*-]/).filter(i => i)
+    //   var separatedInput = input.split(/([()+*-])/).filter(i => i)
+    //   if(separatedInput.length > 1 && separatedInput.at(-1).match(/[a-z]/i)){
+    //     inputVariables.push(input)
+    //     }
+    //   var inputObj = toObject(separatedInput)
+    //   console.log(input)
+    //   setTermData(prevTerm => ({ ...prevTerm, inputTerm: input, variables: inputVariables }))
+    //   getRows(inputObj)
+    // }
+  }
+
+
+  const onClick = () => {
+    var inputVariables = termData.inputTerm.split(/[()+*-]/).filter(i => i)
+    var separatedInput = termData.inputTerm.split(/([()+*-])/).filter(i => i)
+    if (separatedInput.length > 1 && separatedInput.at(-1).match(/[a-z]/i)) {
+      inputVariables.push(termData.inputTerm)
     }
-    var separatedInput = input.split(/([+*-])/).filter(i => i)
     var inputObj = toObject(separatedInput)
-    setTermData(prevTerm => ({ ...prevTerm, inputTerm: input, variables: inputVariables }))
+    // console.log(input)
+    setTermData(prevTerm => ({ ...prevTerm, variables: inputVariables }))
     getRows(inputObj)
   }
 
@@ -97,20 +117,20 @@ function App() {
           },
           // Table Body
           {
-            props: { color: 'body', type: "dark"},
+            props: { color: 'body', type: "dark" },
             style: {
               backgroundColor: themePalette.palette.secondary.main,
               color: "white",
-              "&:hover":{
+              "&:hover": {
                 backgroundColor: themePalette.palette.primary.main
               }
             }
           },
           {
-            props: { color: 'body', type: "light"},
+            props: { color: 'body', type: "light" },
             style: {
               backgroundColor: "white",
-              "&:hover":{
+              "&:hover": {
                 backgroundColor: themePalette.palette.primary.main,
                 color: "white",
               }
@@ -120,7 +140,7 @@ function App() {
       },
       MuiTypography: {
         variants: [
-         // Table head text  
+          // Table head text  
           {
             props: { type: "highlight" },
             style: {
@@ -135,6 +155,7 @@ function App() {
             style: {
               color: "white",
               fontFamily: 'Poppins',
+              textTransform: "none",
             }
           },
         ]
@@ -184,7 +205,16 @@ function App() {
               </Grid>
               <Grid item xs={11}>
                 <Container maxWidth="false">
-                  <TextField id="outlined-basic" label="Expression" variant="outlined" onChange={e => onChange(e)} value={termData.inputTerm} />
+                  <Grid container spacing={1} sx={{ justifyContent: "center" }}>
+                    <Grid item>
+                      <TextField id="outlined-basic" label="Expression" variant="outlined" onChange={e => onChange(e)} value={termData.inputTerm} />
+                    </Grid>
+                    <Grid item>
+                      <Button variant="contained" sx={{ height: "100%" }} onClick={() => onClick()}> 
+                      <Typography type="banner"> Calculate </Typography>
+                      </Button>
+                    </Grid>
+                  </Grid>
                   <TruthTable Term={{ termData }} />
                 </Container>
               </Grid>
